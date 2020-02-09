@@ -1,0 +1,18 @@
+
+language: go
+
+go:
+  - 1.13
+
+matrix:
+  include:
+    - os: linux
+      dist: xenial
+      before_install: sudo apt-get -y install libxinerama-dev xorg-dev libgl1-mesa-dev
+    - os: windows
+    - os: osx
+
+script:
+  - go build
+
+

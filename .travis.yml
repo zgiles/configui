@@ -1,42 +1,44 @@
 language: go
 go:
 - 1.13
-matrix:
+jobs:
   include:
   - os: linux
     dist: xenial
     before_install: sudo apt-get -y install libxinerama-dev xorg-dev libgl1-mesa-dev
+    cache:
+      directories:
+        - $HOME/.cache/go-build
+        - $HOME/gopath/pkg/mod
   - os: windows
   - os: osx
+    cache:
+      directories:
+        - $HOME/Library/Caches/go-build
+        - $HOME/gopath/pkg/mod
 script:
 - go build
 before_deploy:
   - if [[ ("$TRAVIS_OS_NAME" == "osx") || ("$TRAVIS_OS_NAME" == "linux") ]]; then mv configui configui-$TRAVIS_OS_NAME; fi
 deploy:
   - provider: releases
-    api_key:
+    token:
       secure: XxD0tMmJDx439PDGajRqLFJZYuqwQhqhifoXkT3V21BRoTjjnenV3C+ImrjF386RrKZiN6w6azfZ1PSMRbZOEpaglpsOzE/+FtePahGfQXuYA1HZ0QK4l0ovZ+dM/C1TPFDL2W1IhXtDCBjhS8YgwOIt0uNXWYgFLdjITTIzVM0MnAYryfiP1lMYPsHTd3fxFM0MKTLe472evTaUat8PEiv0rhr9CWB4RVQJ8txyrHftUb0LMAmZrwVEXpa0lKXj/CU1hyh5c8xnOrD67wwKA3LOAuzfePBFDkVXEQNyNNGDrJVvsFbk6sIE37aNbNKmrBpm9UqQdS3Cz5g8wHDsEhDfYffe+QwAkHgN7jdELMYZ0LnE2jXGvYOoBi8jBXoPLO2NEXtuwm7PV1SI38scK4RruzorWlV9brjwOxRNsw6T4YQ+Z/ydc71EjFLuAUqe+YSSgdEB+O2M2+hIzABZz8WzXct4lOI3OG8LIPORgGxOmYgVmx4BTS3/tpDctkmK8uiNxNS/4egM4ARYyvW9QU/0aHQx7f3NXm9W1MZVRp0zohF7hnWt/GdtmjXqHvbCOmAsBSIurftJVs5vSKUA3Hf/2vJrlA4UgJFef72CMTHyZr4FFFEZ3vlZYiqy3L/nfKAQnRqqAMdGWQ2rOMosEKOLSsB+HVre90t5oous56I=
     file: configui-linux
-    skip_cleanup: true
     on:
       tags: true
       condition: $TRAVIS_OS_NAME = linux
-      branch: master
   - provider: releases
-    api_key:
+    token:
       secure: XxD0tMmJDx439PDGajRqLFJZYuqwQhqhifoXkT3V21BRoTjjnenV3C+ImrjF386RrKZiN6w6azfZ1PSMRbZOEpaglpsOzE/+FtePahGfQXuYA1HZ0QK4l0ovZ+dM/C1TPFDL2W1IhXtDCBjhS8YgwOIt0uNXWYgFLdjITTIzVM0MnAYryfiP1lMYPsHTd3fxFM0MKTLe472evTaUat8PEiv0rhr9CWB4RVQJ8txyrHftUb0LMAmZrwVEXpa0lKXj/CU1hyh5c8xnOrD67wwKA3LOAuzfePBFDkVXEQNyNNGDrJVvsFbk6sIE37aNbNKmrBpm9UqQdS3Cz5g8wHDsEhDfYffe+QwAkHgN7jdELMYZ0LnE2jXGvYOoBi8jBXoPLO2NEXtuwm7PV1SI38scK4RruzorWlV9brjwOxRNsw6T4YQ+Z/ydc71EjFLuAUqe+YSSgdEB+O2M2+hIzABZz8WzXct4lOI3OG8LIPORgGxOmYgVmx4BTS3/tpDctkmK8uiNxNS/4egM4ARYyvW9QU/0aHQx7f3NXm9W1MZVRp0zohF7hnWt/GdtmjXqHvbCOmAsBSIurftJVs5vSKUA3Hf/2vJrlA4UgJFef72CMTHyZr4FFFEZ3vlZYiqy3L/nfKAQnRqqAMdGWQ2rOMosEKOLSsB+HVre90t5oous56I=
     file: configui-osx
-    skip_cleanup: true
     on:
       tags: true
       condition: $TRAVIS_OS_NAME = osx
-      branch: master
   - provider: releases
-    api_key:
+    token:
       secure: XxD0tMmJDx439PDGajRqLFJZYuqwQhqhifoXkT3V21BRoTjjnenV3C+ImrjF386RrKZiN6w6azfZ1PSMRbZOEpaglpsOzE/+FtePahGfQXuYA1HZ0QK4l0ovZ+dM/C1TPFDL2W1IhXtDCBjhS8YgwOIt0uNXWYgFLdjITTIzVM0MnAYryfiP1lMYPsHTd3fxFM0MKTLe472evTaUat8PEiv0rhr9CWB4RVQJ8txyrHftUb0LMAmZrwVEXpa0lKXj/CU1hyh5c8xnOrD67wwKA3LOAuzfePBFDkVXEQNyNNGDrJVvsFbk6sIE37aNbNKmrBpm9UqQdS3Cz5g8wHDsEhDfYffe+QwAkHgN7jdELMYZ0LnE2jXGvYOoBi8jBXoPLO2NEXtuwm7PV1SI38scK4RruzorWlV9brjwOxRNsw6T4YQ+Z/ydc71EjFLuAUqe+YSSgdEB+O2M2+hIzABZz8WzXct4lOI3OG8LIPORgGxOmYgVmx4BTS3/tpDctkmK8uiNxNS/4egM4ARYyvW9QU/0aHQx7f3NXm9W1MZVRp0zohF7hnWt/GdtmjXqHvbCOmAsBSIurftJVs5vSKUA3Hf/2vJrlA4UgJFef72CMTHyZr4FFFEZ3vlZYiqy3L/nfKAQnRqqAMdGWQ2rOMosEKOLSsB+HVre90t5oous56I=
     file: configui.exe
-    skip_cleanup: true
     on:
       tags: true
       condition: $TRAVIS_OS_NAME = windows
-      branch: master

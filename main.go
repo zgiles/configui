@@ -6,6 +6,7 @@ import (
 	fyneapp "fyne.io/fyne/app"
 	"fyne.io/fyne/layout"
 	"fyne.io/fyne/widget"
+	"runtime"
 
 	"io"
 	"io/ioutil"
@@ -203,10 +204,13 @@ func main() {
 	// Find all rsc and firmware files
 	npkfiles := []string{}
 	rscfiles := []string{}
-	localfiles, _ := ioutil.ReadDir(".")
+	localdir := "."
+	if runtime.GOOS == "darwin" {
+		localdir = "~/Downloads"
+	}
+	localfiles, _ := ioutil.ReadDir(localdir)
 	for _, file := range localfiles {
 		if file.Mode().IsRegular() {
-			log.Printf(file.Name())
 			if filepath.Ext(file.Name()) == ".rsc" {
 				rscfiles = append(rscfiles, file.Name())
 			}

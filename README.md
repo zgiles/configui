@@ -1,6 +1,8 @@
 # configui
 Router autoconfiguration tool for Mikrotik routers, especially for mesh networks
 
+[![Build Status](https://travis-ci.com/zgiles/configui.svg?token=G9G1zGy4KwRkpSJ7QvjQ&branch=master)](https://travis-ci.com/zgiles/configui)
+
 ---
 
 ## Use

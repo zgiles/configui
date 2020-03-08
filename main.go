@@ -206,7 +206,11 @@ func main() {
 	rscfiles := []string{}
 	localdir := "."
 	if runtime.GOOS == "darwin" {
-		localdir = "~/Downloads"
+		homedir, err := os.UserHomeDir()
+		if err != nil {
+			log.Fatal(err)
+		}
+		localdir = filepath.Join(homedir, "Downloads")
 	}
 	localfiles, _ := ioutil.ReadDir(localdir)
 	for _, file := range localfiles {
